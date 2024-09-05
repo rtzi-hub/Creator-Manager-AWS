@@ -118,9 +118,9 @@ def main():
 
     # Exist services
     if args.action == 'create':
-        my_vpc_id = 'vpc-085589eeda0ae85d1'
-        my_subnet_id = 'subnet-0599162f6cd1dbe02'
-        my_security_group_id = 'sg-0c509f02d2f013d78'
+        my_vpc_id = 'vpc-085589eeda0ae85d1' #Change it to exist VPC
+        my_subnet_id = 'subnet-0599162f6cd1dbe02' #Change it to exist Public Subnet
+        my_security_group_id = 'sg-0c509f02d2f013d78' #Change it to exist Security Group
 
         launch_new_instance(
             vpc_id=my_vpc_id,
