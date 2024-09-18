@@ -1,164 +1,83 @@
-## AWS Resource Management with Python Scripts
+## AWS CLI Management Tool - README
 
-This repository provides Python scripts for managing your AWS resources using the Boto3 library. With these scripts, you can easily create, manage, and delete EC2 instances, S3 buckets, and Route 53 DNS records.
+This script provides a command-line interface (CLI) for managing various AWS services, including EC2 instances, S3 buckets, and Route53 DNS zones. It simplifies common tasks and helps you automate your AWS infrastructure management.
 
-**Table of Contents**
+### Prerequisites
 
-* [Prerequisites](#prerequisites)
-* [Installation](#installation)
-* [Script Usage](#script-usage)
-    * [EC2 Manager](#ec2-manager)
-    * [S3 Manager](#s3-manager)
-    * [Route 53 Manager](#route-53-manager)
-* [Best Practices](#best-practices)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
+* An AWS account with proper permissions for the desired actions.
+* Python 3.x installed on your system.
+* Boto3 library installed: `pip install boto3`
 
-**Prerequisites**
+**Note:** You'll need to configure your AWS credentials before using the script. You can do this by setting environment variables, creating a credentials file, or using a configuration profile. Refer to the Boto3 documentation for details:  [https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html)
 
-1. **Python 3.6+**: Ensure you have Python 3.6 or a later version installed. Verify with:
+### Usage
 
-   ```bash
-   python --version
-   ```
-
-2. **AWS Credentials**: Configure your AWS credentials using the AWS CLI:
-
-   ```bash
-   aws configure
-   ```
-
-   Alternatively, set the following environment variables:
-
-   ```bash
-   export AWS_ACCESS_KEY_ID=your_access_key_id
-   export AWS_SECRET_ACCESS_KEY=your_secret_access_key
-   ```
-
-**Installation**
-
-1. Clone this repository:
-
-   ```bash
-   git clone https://github.com/yourusername/yourrepository.git
-   ```
-
-2. Navigate to the repository directory:
-
-   ```bash
-   cd yourrepository
-   ```
-
-3. Install the required Python packages:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-**Script Usage**
-
-**EC2 Manager (ec2-creator.py)**
-
-This script allows you to manage your EC2 instances.
-
-**Usage:**
+This script utilizes the `argparse` library to accept different commands and arguments. Run the script with the `--help` flag to see all available options and their descriptions:
 
 ```
-python ec2-manager.py [options]
+python aws_cli_tool.py --help
 ```
 
-**Options:**
+**Supported Services and Actions:**
 
-* `--create`: Create a new EC2 instance.
-* `--terminate`: Terminate an existing EC2 instance.
-* `--list`: List all EC2 instances.
+* **EC2 Instances:**
+    * `create`: Launch a new EC2 instance (requires instance type, VPC ID, subnet ID, and operating system)
+    * `list`: List all running EC2 instances with their tags
+    * `start`: Start a stopped EC2 instance (requires instance ID)
+    * `stop`: Stop a running EC2 instance (requires instance ID)
 
-**Examples:**
+* **S3 Buckets:**
+    * `create`: Create a new S3 bucket (requires bucket name, optionally set public access)
+    * `upload`: Upload a file to an existing S3 bucket (requires bucket name and file path)
+    * `list`: List all S3 buckets created by this script
 
-* **Create a new EC2 instance:**
+* **Route53 DNS Zones:**
+    * `create`: Create a new hosted zone (requires domain name)
+    * `update`: Update an existing DNS record (requires zone ID, record details)
+    * `delete`: Delete an existing DNS record (requires zone ID, record details)
+    * `list`: List all Route53 zones created by this script (shows zone ID and domain name)
 
-```bash
-python ec2-manager.py --create --instance-type t2.micro --key-name my-key --ami-id ami-12345678
-```
 
-    * `--instance-type`: Type of EC2 instance (e.g., t2.micro).
-    * `--key-name`: Name of the key pair for SSH access.
-    * `--ami-id`: AMI ID to use for the instance.
+### Example Usage
 
-* **Terminate an existing EC2 instance:**
-
-```bash
-python ec2-manager.py --terminate --instance-id i-1234567890abcdef0
-```
-
-    * `--instance-id`: ID of the EC2 instance to terminate.
-
-* **List all EC2 instances:**
-
-```bash
-python ec2-manager.py --list
-```
-
-**S3 Manager (s3-creator.py)**
-
-This script allows you to manage your S3 buckets and files.
-
-**Usage:**
+**Launch a new EC2 instance:**
 
 ```
-python s3-manager.py [options]
+python aws_cli_tool.py --action create --os ubuntu --type t3.nano \
+--vpc-id vpc-085589eeda0ae85d1 --subnet-id subnet-0599162f6cd1dbe02
 ```
 
-**Options:**
-
-* `--create-bucket`: Create a new S3 bucket.
-* `--upload-file`: Upload a file to an S3 bucket.
-* `--list-buckets`: List all S3 buckets.
-
-**Examples:**
-
-* **Create a new S3 bucket:**
-
-```bash
-python s3-manager.py --create-bucket --bucket-name my-bucket
-```
-
-    * `--bucket-name`: Name of the new S3 bucket.
-
-* **Upload a file to an S3 bucket:**
-
-```bash
-python s3-manager.py --upload-file --bucket-name my-bucket --file-path /path/to/file.txt
-```
-
-    * `--file-path`: Path to the file you want to upload.
-
-* **List all S3 buckets:**
-
-```bash
-python s3-manager.py --list-buckets
-```
-
-**Route 53 Manager (route53-creator.py)**
-
-This script allows you to manage your DNS records in Route 53.
-
-**Usage:**
+**Create a new S3 bucket with public access:**
 
 ```
-python route53-manager.py [options]
+python aws_cli_tool.py --action create --bucket-name my-public-bucket --public
 ```
 
-**Options:**
+**Upload a file to an existing S3 bucket:**
 
-* `--create-record`: Create a new DNS record.
-* `--delete-record`: Delete an existing DNS record.
-* `--list-records`: List all DNS records.
+```
+python aws_cli_tool.py --action upload --bucket-name my-bucket --file /path/to/file.txt
+```
 
-**Examples:**
+**List all Route53 zones created by this script:**
 
-* **Create a new DNS record:**
+```
+python aws_cli_tool.py --action list
+```
 
-```bash
-python route53-manager.py
+**Update a DNS record (replace placeholders with actual values):**
+
+```
+python aws_cli_tool.py --action update --zone-id Z1234567890EXAMPLE --record-name www \
+--record-type A --record-value 10.0.0.1
+```
+
+
+### Additional Notes
+
+* This script uses a tag (`CreatedBy: CLI_Created`) to identify resources created by itself.
+* Always double-check your input parameters before running any actions that modify your AWS resources.
+* Consider implementing error handling in your own scripts based on your specific needs.
+
+
+This is a basic overview of the script's functionality. Feel free to explore the source code for further details and customization options.
