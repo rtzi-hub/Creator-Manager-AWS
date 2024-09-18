@@ -21,7 +21,7 @@ python aws_cli_tool.py --help
 **Supported Services and Actions:**
 
 * **EC2 Instances:**
-    * `create`: Launch a new EC2 instance (requires instance type, VPC ID, subnet ID, and operating system)
+    * `create`: Launch a new EC2 instance (requires instance type, operating system)
     * `list`: List all running EC2 instances with their tags
     * `start`: Start a stopped EC2 instance (requires instance ID)
     * `stop`: Stop a running EC2 instance (requires instance ID)
@@ -43,8 +43,7 @@ python aws_cli_tool.py --help
 **Launch a new EC2 instance:**
 
 ```
-python aws_cli_tool.py --action create --os ubuntu --type t3.nano \
---vpc-id vpc-085589eeda0ae85d1 --subnet-id subnet-0599162f6cd1dbe02
+python aws_cli_tool.py --action create --os ubuntu --type t3.nano
 ```
 
 **Create a new S3 bucket with public access:**
