@@ -15,7 +15,7 @@ This script provides a command-line interface (CLI) for managing various AWS ser
 This script utilizes the `argparse` library to accept different commands and arguments. Run the script with the `--help` flag to see all available options and their descriptions:
 
 ```
-python aws_cli_tool.py --help
+python ec2-creator.py --help
 ```
 
 **Supported Services and Actions:**
@@ -43,31 +43,31 @@ python aws_cli_tool.py --help
 **Launch a new EC2 instance:**
 
 ```
-python aws_cli_tool.py --action create --os ubuntu --type t3.nano
+python ec2-creator.py --action create --os ubuntu --type t3.nano
 ```
 
 **Create a new S3 bucket with public access:**
 
 ```
-python aws_cli_tool.py --action create --bucket-name my-public-bucket --public
+python S3-creator.py --action create --bucket-name my-public-bucket --public
 ```
 
 **Upload a file to an existing S3 bucket:**
 
 ```
-python aws_cli_tool.py --action upload --bucket-name my-bucket --file /path/to/file.txt
+python S3-creator.py --action upload --bucket-name my-bucket --file /path/to/file.txt
 ```
 
 **List all Route53 zones created by this script:**
 
 ```
-python aws_cli_tool.py --action list
+python route53-creator.py --action list
 ```
 
 **Update a DNS record (replace placeholders with actual values):**
 
 ```
-python aws_cli_tool.py --action update --zone-id Z1234567890EXAMPLE --record-name www \
+python route53-creator --action update --zone-id Z1234567890EXAMPLE --record-name www \
 --record-type A --record-value 10.0.0.1
 ```
 
